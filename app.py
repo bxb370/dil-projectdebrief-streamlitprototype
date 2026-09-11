@@ -12,14 +12,14 @@ from data_loader import load_debrief_data, load_raw_table
 st.set_page_config(page_title="Project Debrief Insights", page_icon="📊", layout="wide")
 
 TABLEAU10 = [
-    "#4E79A7", "#F28E2B", "#E15759", "#76B7B2", "#59A14F",
-    "#EDC948", "#B07AA1", "#FF9DA7", "#9C755F", "#BAB0AC",
+    "#2F6B9A", "#E07A3F", "#C94C4C", "#4FA3A5", "#5B8C5A",
+    "#D6A419", "#8A6FB0", "#D982A6", "#8C6D4A", "#9AA3A8",
 ]
 CATEGORY_COLORS = {
-    "Leverageable Finding / Best Practice": "#59A14F",
-    "Opportunity for Improvement": "#F28E2B",
-    "Technical Knowledge / Learning": "#4E79A7",
-    "Unspecified": "#BAB0AC",
+    "Leverageable Finding / Best Practice": "#5B8C5A",
+    "Opportunity for Improvement": "#E07A3F",
+    "Technical Knowledge / Learning": "#2F6B9A",
+    "Unspecified": "#9AA3A8",
 }
 DASHBOARD_YEAR = 2026
 SURVEY_GOAL = 0.60
@@ -38,24 +38,26 @@ ESTIMATED_DATE_OFFSETS = [14, -7, 21, 0, 30, -10, 12, 5, -3, 24, 8, -14, 16, 4]
 st.markdown(
     """
     <style>
-      .stApp { background-color: #F5F5F5; }
-      section[data-testid="stSidebar"] { background-color: #FFFFFF; border-right: 1px solid #CFCFCF; }
+            .stApp { background-color: #F7F4EE; }
+            section[data-testid="stSidebar"] { background-color: #FFFFFF; border-right: 1px solid #D8D1C7; }
       div[data-testid="stMetric"] {
-          background: #FFFFFF; border: 1px solid #D0D0D0; border-radius: 2px;
+                    background: #FFFFFF; border: 1px solid #D8D1C7; border-radius: 4px;
           padding: 10px 14px; box-shadow: 0 1px 2px rgba(0,0,0,.08);
       }
-      div[data-testid="stMetricValue"] { font-size: 26px; color: #1F3864; }
+            div[data-testid="stMetricValue"] { font-size: 26px; color: #243B53; }
     .goal-strip { display:grid; grid-template-columns:minmax(0,2fr) minmax(260px,1fr); gap:12px; margin-bottom:12px; align-items:stretch; }
-      .goal-card { background:#FFFFFF; border:1px solid #D0D0D0; padding:12px 16px; box-shadow:0 1px 2px rgba(0,0,0,.08); }
-      .goal-card span { display:block; color:#666666; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
-      .goal-card strong { display:block; color:#1F3864; font-size:24px; margin-top:2px; }
-      .tab-header { background:#1F3864; color:#FFFFFF; padding:14px 20px; border-radius:2px; margin-bottom:14px; }
+            .goal-card { background:#FFFFFF; border:1px solid #D8D1C7; border-top:4px solid #2F6B9A; padding:12px 16px; box-shadow:0 1px 2px rgba(36,59,83,.10); }
+            .goal-card span { display:block; color:#6B6258; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+            .goal-card strong { display:block; color:#243B53; font-size:24px; margin-top:2px; }
+            .tab-header { background:#243B53; color:#FFFFFF; padding:14px 20px; border-radius:4px; margin-bottom:14px; }
       .tab-header h1 { margin:0; font-size:24px; font-weight:600; }
-      .tab-header p { margin:4px 0 0 0; font-size:13px; color:#C9D3E8; }
-    .callout { background:#FFFFFF; border-left:5px solid #E15759; padding:12px 16px;
-             margin:0 0 12px 0; color:#333333; box-shadow:0 1px 2px rgba(0,0,0,.08); }
-      .panel-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#333333; font-size:15px;
-                     font-weight:600; border-bottom:1px solid #CFCFCF; padding-bottom:4px;
+            .tab-header p { margin:4px 0 0 0; font-size:13px; color:#DDE8F0; }
+        .callout { background:#FFFFFF; border-left:5px solid #C94C4C; padding:12px 16px;
+                         margin:0 0 12px 0; color:#2F2F2F; box-shadow:0 1px 2px rgba(36,59,83,.10); }
+                        .section-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#243B53; font-size:22px;
+                                             font-weight:700; margin:18px 0 8px 0; }
+            .panel-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#2F2F2F; font-size:15px;
+                                         font-weight:600; border-bottom:1px solid #D8D1C7; padding-bottom:4px;
                      margin:10px 0 10px 0; }
     </style>
     """,
@@ -67,17 +69,21 @@ def panel(title: str) -> None:
     st.markdown(f'<div class="panel-title">{title}</div>', unsafe_allow_html=True)
 
 
+def section(title: str) -> None:
+    st.markdown(f'<div class="section-title">{title}</div>', unsafe_allow_html=True)
+
+
 def style_fig(fig, height: int = 340):
     fig.update_layout(
         height=height,
         margin=dict(l=10, r=10, t=30, b=10),
         paper_bgcolor="#FFFFFF",
         plot_bgcolor="#FFFFFF",
-        font=dict(family="Segoe UI, Tahoma, sans-serif", size=12, color="#333333"),
+        font=dict(family="Segoe UI, Tahoma, sans-serif", size=12, color="#2F2F2F"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, title=None),
     )
-    fig.update_xaxes(gridcolor="#E6E6E6", zeroline=False)
-    fig.update_yaxes(gridcolor="#E6E6E6", zeroline=False)
+    fig.update_xaxes(gridcolor="#ECE7DF", zeroline=False)
+    fig.update_yaxes(gridcolor="#ECE7DF", zeroline=False)
     return fig
 
 
@@ -193,9 +199,10 @@ goal_color_map = {
     business_unit: TABLEAU10[index % len(TABLEAU10)]
     for index, business_unit in enumerate(goal_overview["Business Unit"])
 }
+section("Goals")
+panel("2026 project debrief completion goals by team")
 left, right = st.columns([3, 1])
 with left:
-    panel("2026 project debrief completion goals by team")
     fig = px.bar(
         goal_overview,
         x="Business Unit",
@@ -210,62 +217,6 @@ with left:
     fig.update_xaxes(title=None, tickangle=-25)
     fig.update_yaxes(title="Annual debrief goal", dtick=1)
     st.plotly_chart(style_fig(fig, 300), use_container_width=True)
-
-    progress_col, quarter_col = st.columns([3, 2])
-    with progress_col:
-        panel("How far is each team toward its debrief goal?")
-        fig = go.Figure()
-        fig.add_bar(
-            x=goal_overview["Business Unit"],
-            y=goal_overview["Completed"],
-            name="Completed",
-            marker_color=[goal_color_map[business_unit] for business_unit in goal_overview["Business Unit"]],
-            text=goal_overview["Completed"],
-            textposition="inside",
-            customdata=goal_overview[["Goal", "Remaining", "Progress"]],
-            hovertemplate=(
-                "%{x}<br>Completed: %{y}<br>Goal: %{customdata[0]}<br>"
-                "Remaining: %{customdata[1]}<br>Progress: %{customdata[2]:.0%}<extra></extra>"
-            ),
-        )
-        fig.add_bar(
-            x=goal_overview["Business Unit"],
-            y=goal_overview["Remaining"],
-            name="Remaining",
-            marker_color="#D9D9D9",
-            text=goal_overview["Remaining"],
-            textposition="inside",
-            customdata=goal_overview[["Goal", "Completed", "Progress"]],
-            hovertemplate=(
-                "%{x}<br>Remaining: %{y}<br>Goal: %{customdata[0]}<br>"
-                "Completed: %{customdata[1]}<br>Progress: %{customdata[2]:.0%}<extra></extra>"
-            ),
-        )
-        fig.update_traces(textfont_color="#1F3864")
-        fig.update_layout(barmode="stack", legend_title_text=None)
-        fig.update_xaxes(title=None, tickangle=-25)
-        fig.update_yaxes(title="Annual debrief goal", dtick=1)
-        st.plotly_chart(style_fig(fig, 390), use_container_width=True)
-
-    with quarter_col:
-        panel("Completed debriefs by quarter")
-        quarter_matrix = pd.crosstab(f_projects["Business Unit"], f_projects["Quarter"])
-        quarter_matrix = quarter_matrix.reindex(index=goal_overview["Business Unit"], columns=["Q1", "Q2", "Q3", "Q4"], fill_value=0)
-        fig = go.Figure(
-            data=go.Heatmap(
-                z=quarter_matrix.values,
-                x=quarter_matrix.columns,
-                y=quarter_matrix.index,
-                colorscale=[[0, "#F2F2F2"], [1, "#4E79A7"]],
-                text=quarter_matrix.values,
-                texttemplate="%{text}",
-                hovertemplate="%{y}<br>%{x}: %{z} completed<extra></extra>",
-                showscale=False,
-            )
-        )
-        fig.update_xaxes(title=None)
-        fig.update_yaxes(title=None)
-        st.plotly_chart(style_fig(fig, 390), use_container_width=True)
 
 with right:
     st.markdown(
@@ -282,6 +233,63 @@ with right:
         unsafe_allow_html=True,
     )
 
+section("Performance")
+progress_col, quarter_col = st.columns([3, 2])
+with progress_col:
+    panel("How far is each team toward its debrief goal?")
+    fig = go.Figure()
+    fig.add_bar(
+        x=goal_overview["Business Unit"],
+        y=goal_overview["Completed"],
+        name="Completed",
+        marker_color=[goal_color_map[business_unit] for business_unit in goal_overview["Business Unit"]],
+        text=goal_overview["Completed"],
+        textposition="inside",
+        customdata=goal_overview[["Goal", "Remaining", "Progress"]],
+        hovertemplate=(
+            "%{x}<br>Completed: %{y}<br>Goal: %{customdata[0]}<br>"
+            "Remaining: %{customdata[1]}<br>Progress: %{customdata[2]:.0%}<extra></extra>"
+        ),
+    )
+    fig.add_bar(
+        x=goal_overview["Business Unit"],
+        y=goal_overview["Remaining"],
+        name="Remaining",
+            marker_color="#D8D1C7",
+        text=goal_overview["Remaining"],
+        textposition="inside",
+        customdata=goal_overview[["Goal", "Completed", "Progress"]],
+        hovertemplate=(
+            "%{x}<br>Remaining: %{y}<br>Goal: %{customdata[0]}<br>"
+            "Completed: %{customdata[1]}<br>Progress: %{customdata[2]:.0%}<extra></extra>"
+        ),
+    )
+    fig.update_traces(textfont_color="#243B53")
+    fig.update_layout(barmode="stack", legend_title_text=None)
+    fig.update_xaxes(title=None, tickangle=-25)
+    fig.update_yaxes(title="Annual debrief goal", dtick=1)
+    st.plotly_chart(style_fig(fig, 390), use_container_width=True)
+
+with quarter_col:
+    panel("Completed debriefs by quarter")
+    quarter_matrix = pd.crosstab(f_projects["Business Unit"], f_projects["Quarter"])
+    quarter_matrix = quarter_matrix.reindex(index=goal_overview["Business Unit"], columns=["Q1", "Q2", "Q3", "Q4"], fill_value=0)
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=quarter_matrix.values,
+            x=quarter_matrix.columns,
+            y=quarter_matrix.index,
+                colorscale=[[0, "#F0ECE5"], [1, "#2F6B9A"]],
+            text=quarter_matrix.values,
+            texttemplate="%{text}",
+            hovertemplate="%{y}<br>%{x}: %{z} completed<extra></extra>",
+            showscale=False,
+        )
+    )
+    fig.update_xaxes(title=None)
+    fig.update_yaxes(title=None)
+    st.plotly_chart(style_fig(fig, 390), use_container_width=True)
+
 panel("How is each team doing on the survey response goal?")
 survey_box = f_projects.dropna(subset=["Survey Response Rate"]).copy()
 fig = px.box(
@@ -296,7 +304,7 @@ fig = px.box(
 )
 fig.add_hline(
     y=SURVEY_GOAL,
-    line_color="#E15759",
+    line_color="#C94C4C",
     line_width=3,
     annotation_text="60% goal",
     annotation_position="top left",
@@ -334,11 +342,11 @@ fig = px.scatter(
         "Timing",
     ],
 )
-fig.add_hrect(y0=y_min, y1=0, fillcolor="#DDEED8", opacity=0.45, line_width=0, layer="below")
-fig.add_hrect(y0=0, y1=y_max, fillcolor="#F7D7D4", opacity=0.45, line_width=0, layer="below")
+fig.add_hrect(y0=y_min, y1=0, fillcolor="#DCEBD8", opacity=0.48, line_width=0, layer="below")
+fig.add_hrect(y0=0, y1=y_max, fillcolor="#F4D7D2", opacity=0.48, line_width=0, layer="below")
 fig.add_hline(
     y=0,
-    line_color="#333333",
+    line_color="#2F2F2F",
     line_width=2,
     annotation_text="Due date / on time",
     annotation_position="top left",
@@ -349,6 +357,53 @@ fig.update_xaxes(title=None, tickangle=-25)
 fig.update_yaxes(title="Days from due date", zeroline=False, range=[y_min, y_max])
 st.plotly_chart(style_fig(fig, 390), use_container_width=True)
 
+panel("How do teams compare on project ratings?")
+rating_chart, rating_summary = st.columns([3, 1])
+average_rating = f_projects["Project Rating"].mean()
+with rating_chart:
+    rating_points = f_projects.dropna(subset=["Project Rating"]).copy()
+    fig = px.box(
+        rating_points,
+        x="Business Unit",
+        y="Project Rating",
+        color="Business Unit",
+        color_discrete_map=goal_color_map,
+        points="all",
+        category_orders={"Business Unit": goal_overview["Business Unit"].tolist()},
+        hover_data=[
+            "Project Name",
+            "Project Number",
+            "Project Lead",
+            "Stage",
+            "Debrief Date",
+            "Quarter",
+            "Project Rating",
+        ],
+    )
+    fig.add_hline(
+        y=average_rating,
+        line_color="#C94C4C",
+        line_width=3,
+        annotation_text=f"Average {average_rating:.2f}",
+        annotation_position="top left",
+    )
+    fig.update_layout(showlegend=False)
+    fig.update_xaxes(title=None, tickangle=-25)
+    fig.update_yaxes(title="Project rating", range=[0, 5.2])
+    st.plotly_chart(style_fig(fig, 360), use_container_width=True)
+
+with rating_summary:
+    st.markdown(
+        f"""
+        <div class="goal-card" style="height:100%;">
+          <span>Overall average project rating</span>
+          <strong>{average_rating:.2f} / 5</strong>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+section("Get More Info")
 panel("Want to explore past project insights?")
 st.markdown(
         """
