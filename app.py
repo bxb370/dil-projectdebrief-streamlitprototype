@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import html
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -12,14 +14,14 @@ from data_loader import load_debrief_data, load_raw_table
 st.set_page_config(page_title="Project Debrief Insights", page_icon="📊", layout="wide")
 
 TABLEAU10 = [
-    "#2F6B9A", "#E07A3F", "#C94C4C", "#4FA3A5", "#5B8C5A",
-    "#D6A419", "#8A6FB0", "#D982A6", "#8C6D4A", "#9AA3A8",
+    "#4E79A7", "#F28E2B", "#E15759", "#76B7B2", "#59A14F",
+    "#EDC948", "#B07AA1", "#FF9DA7", "#9C755F", "#BAB0AC",
 ]
 CATEGORY_COLORS = {
-    "Leverageable Finding / Best Practice": "#5B8C5A",
-    "Opportunity for Improvement": "#E07A3F",
-    "Technical Knowledge / Learning": "#2F6B9A",
-    "Unspecified": "#9AA3A8",
+    "Leverageable Finding / Best Practice": "#59A14F",
+    "Opportunity for Improvement": "#F28E2B",
+    "Technical Knowledge / Learning": "#4E79A7",
+    "Unspecified": "#BAB0AC",
 }
 DASHBOARD_YEAR = 2026
 SURVEY_GOAL = 0.60
@@ -38,26 +40,26 @@ ESTIMATED_DATE_OFFSETS = [14, -7, 21, 0, 30, -10, 12, 5, -3, 24, 8, -14, 16, 4]
 st.markdown(
     """
     <style>
-            .stApp { background-color: #F7F4EE; }
-            section[data-testid="stSidebar"] { background-color: #FFFFFF; border-right: 1px solid #D8D1C7; }
+        .stApp { background-color: #F5F5F5; }
+        section[data-testid="stSidebar"] { background-color: #FFFFFF; border-right: 1px solid #CFCFCF; }
       div[data-testid="stMetric"] {
-                    background: #FFFFFF; border: 1px solid #D8D1C7; border-radius: 4px;
+            background: #FFFFFF; border: 1px solid #D0D0D0; border-radius: 2px;
           padding: 10px 14px; box-shadow: 0 1px 2px rgba(0,0,0,.08);
       }
-            div[data-testid="stMetricValue"] { font-size: 26px; color: #243B53; }
+        div[data-testid="stMetricValue"] { font-size: 26px; color: #1F3864; }
     .goal-strip { display:grid; grid-template-columns:minmax(0,2fr) minmax(260px,1fr); gap:12px; margin-bottom:12px; align-items:stretch; }
-            .goal-card { background:#FFFFFF; border:1px solid #D8D1C7; border-top:4px solid #2F6B9A; padding:12px 16px; box-shadow:0 1px 2px rgba(36,59,83,.10); }
-            .goal-card span { display:block; color:#6B6258; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
-            .goal-card strong { display:block; color:#243B53; font-size:24px; margin-top:2px; }
-            .tab-header { background:#243B53; color:#FFFFFF; padding:14px 20px; border-radius:4px; margin-bottom:14px; }
+        .goal-card { background:#FFFFFF; border:1px solid #D0D0D0; padding:12px 16px; box-shadow:0 1px 2px rgba(0,0,0,.08); }
+        .goal-card span { display:block; color:#666666; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+        .goal-card strong { display:block; color:#1F3864; font-size:24px; margin-top:2px; }
+        .tab-header { background:#1F3864; color:#FFFFFF; padding:14px 20px; border-radius:2px; margin-bottom:14px; }
       .tab-header h1 { margin:0; font-size:24px; font-weight:600; }
-            .tab-header p { margin:4px 0 0 0; font-size:13px; color:#DDE8F0; }
-        .callout { background:#FFFFFF; border-left:5px solid #C94C4C; padding:12px 16px;
-                         margin:0 0 12px 0; color:#2F2F2F; box-shadow:0 1px 2px rgba(36,59,83,.10); }
-                        .section-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#243B53; font-size:22px;
+        .tab-header p { margin:4px 0 0 0; font-size:13px; color:#C9D3E8; }
+        .callout { background:#FFFFFF; border-left:5px solid #E15759; padding:12px 16px;
+             margin:0 0 12px 0; color:#333333; box-shadow:0 1px 2px rgba(0,0,0,.08); }
+            .section-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#1F3864; font-size:22px;
                                              font-weight:700; margin:18px 0 8px 0; }
-            .panel-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#2F2F2F; font-size:15px;
-                                         font-weight:600; border-bottom:1px solid #D8D1C7; padding-bottom:4px;
+        .panel-title { font-family:"Segoe UI",Tahoma,sans-serif; color:#333333; font-size:15px;
+                   font-weight:600; border-bottom:1px solid #CFCFCF; padding-bottom:4px;
                      margin:10px 0 10px 0; }
     </style>
     """,
@@ -79,11 +81,11 @@ def style_fig(fig, height: int = 340):
         margin=dict(l=10, r=10, t=30, b=10),
         paper_bgcolor="#FFFFFF",
         plot_bgcolor="#FFFFFF",
-        font=dict(family="Segoe UI, Tahoma, sans-serif", size=12, color="#2F2F2F"),
+        font=dict(family="Segoe UI, Tahoma, sans-serif", size=12, color="#333333"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, title=None),
     )
-    fig.update_xaxes(gridcolor="#ECE7DF", zeroline=False)
-    fig.update_yaxes(gridcolor="#ECE7DF", zeroline=False)
+    fig.update_xaxes(gridcolor="#E6E6E6", zeroline=False)
+    fig.update_yaxes(gridcolor="#E6E6E6", zeroline=False)
     return fig
 
 
@@ -255,7 +257,7 @@ with progress_col:
         x=goal_overview["Business Unit"],
         y=goal_overview["Remaining"],
         name="Remaining",
-            marker_color="#D8D1C7",
+            marker_color="#D9D9D9",
         text=goal_overview["Remaining"],
         textposition="inside",
         customdata=goal_overview[["Goal", "Completed", "Progress"]],
@@ -264,7 +266,7 @@ with progress_col:
             "Completed: %{customdata[1]}<br>Progress: %{customdata[2]:.0%}<extra></extra>"
         ),
     )
-    fig.update_traces(textfont_color="#243B53")
+    fig.update_traces(textfont_color="#1F3864")
     fig.update_layout(barmode="stack", legend_title_text=None)
     fig.update_xaxes(title=None, tickangle=-25)
     fig.update_yaxes(title="Annual debrief goal", dtick=1)
@@ -279,7 +281,7 @@ with quarter_col:
             z=quarter_matrix.values,
             x=quarter_matrix.columns,
             y=quarter_matrix.index,
-                colorscale=[[0, "#F0ECE5"], [1, "#2F6B9A"]],
+                colorscale=[[0, "#F2F2F2"], [1, "#4E79A7"]],
             text=quarter_matrix.values,
             texttemplate="%{text}",
             hovertemplate="%{y}<br>%{x}: %{z} completed<extra></extra>",
@@ -304,7 +306,7 @@ fig = px.box(
 )
 fig.add_hline(
     y=SURVEY_GOAL,
-    line_color="#C94C4C",
+    line_color="#E15759",
     line_width=3,
     annotation_text="60% goal",
     annotation_position="top left",
@@ -342,11 +344,11 @@ fig = px.scatter(
         "Timing",
     ],
 )
-fig.add_hrect(y0=y_min, y1=0, fillcolor="#DCEBD8", opacity=0.48, line_width=0, layer="below")
-fig.add_hrect(y0=0, y1=y_max, fillcolor="#F4D7D2", opacity=0.48, line_width=0, layer="below")
+fig.add_hrect(y0=y_min, y1=0, fillcolor="#DDEED8", opacity=0.45, line_width=0, layer="below")
+fig.add_hrect(y0=0, y1=y_max, fillcolor="#F7D7D4", opacity=0.45, line_width=0, layer="below")
 fig.add_hline(
     y=0,
-    line_color="#2F2F2F",
+    line_color="#333333",
     line_width=2,
     annotation_text="Due date / on time",
     annotation_position="top left",
@@ -382,7 +384,7 @@ with rating_chart:
     )
     fig.add_hline(
         y=average_rating,
-        line_color="#C94C4C",
+        line_color="#E15759",
         line_width=3,
         annotation_text=f"Average {average_rating:.2f}",
         annotation_position="top left",
@@ -415,56 +417,52 @@ st.markdown(
         unsafe_allow_html=True,
 )
 
-# ---------------------------------------------------------------- project table
-panel("Project details for people who want the specifics")
-table_bu = st.multiselect(
-    "Filter project sheet by team",
-    sorted(f_projects["Business Unit"].unique()),
-    default=sorted(f_projects["Business Unit"].unique()),
-)
-project_sheet = f_projects[f_projects["Business Unit"].isin(table_bu)].copy() if table_bu else f_projects.copy()
-project_sheet["Survey Participation"] = project_sheet["Survey Response Rate"] * 100
+# ---------------------------------------------------------------- project insights
+panel("Select a project to see its key insights")
 takeaway_columns = ["Category 1", "Key Takeaway 1", "Category 2", "Key Takeaway 2", "Category 3", "Key Takeaway 3"]
 takeaway_source = raw_table[["Row"] + [column for column in takeaway_columns if column in raw_table.columns]].copy()
-project_sheet = project_sheet.merge(takeaway_source, on="Row", how="left")
+project_insights = f_projects.merge(takeaway_source, on="Row", how="left").sort_values(["Business Unit", "Debrief Date"])
 for column in takeaway_columns:
-    if column not in project_sheet.columns:
-        project_sheet[column] = ""
-project_sheet = project_sheet[
-    [
-        "Business Unit",
-        "Project Number",
-        "Project Name",
-        "Project Lead",
-        "Stage",
-        "Debrief Date",
-        "Estimated Completion Date",
-        "Survey Participation",
-        "Project Rating",
-        "Category 1",
-        "Key Takeaway 1",
-        "Category 2",
-        "Key Takeaway 2",
-        "Category 3",
-        "Key Takeaway 3",
-        "Suggested Path Forward",
-    ]
-].sort_values(["Business Unit", "Debrief Date"])
-st.dataframe(
-    project_sheet,
-    use_container_width=True,
-    hide_index=True,
-    height=520,
-    column_config={
-        "Debrief Date": st.column_config.DateColumn(format="YYYY-MM-DD"),
-        "Estimated Completion Date": st.column_config.DateColumn(format="YYYY-MM-DD"),
-        "Survey Participation": st.column_config.NumberColumn(format="%.0f%%"),
-        "Project Rating": st.column_config.NumberColumn(format="%.2f"),
-    },
+    if column not in project_insights.columns:
+        project_insights[column] = ""
+
+project_insights["Project Selector"] = project_insights.apply(
+    lambda row: " | ".join(
+        [
+            str(row["Business Unit"]),
+            str(row["Project Name"]),
+            str(row["Project Lead"]),
+            row["Debrief Date"].strftime("%Y-%m-%d") if pd.notna(row["Debrief Date"]) else "No debrief date",
+        ]
+    ),
+    axis=1,
 )
-st.download_button(
-    "Download filtered project sheet (CSV)",
-    project_sheet.to_csv(index=False).encode("utf-8"),
-    file_name="debrief_project_sheet_filtered.csv",
-    mime="text/csv",
+selected_project = st.selectbox("Project", project_insights["Project Selector"].tolist(), label_visibility="collapsed")
+selected_row = project_insights[project_insights["Project Selector"].eq(selected_project)].iloc[0]
+
+st.markdown(
+    f"""
+    <div class="goal-card" style="margin-bottom:12px;">
+      <span>{html.escape(str(selected_row['Business Unit']))} | {html.escape(str(selected_row['Project Lead']))}</span>
+      <strong>{html.escape(str(selected_row['Project Name']))}</strong>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
+
+insight_cols = st.columns(3)
+for index, col in enumerate(insight_cols, start=1):
+    category = selected_row.get(f"Category {index}", "")
+    takeaway = selected_row.get(f"Key Takeaway {index}", "")
+    category_text = html.escape(str(category)) if pd.notna(category) and str(category).strip() else "No category entered"
+    takeaway_text = html.escape(str(takeaway)) if pd.notna(takeaway) and str(takeaway).strip() else "No key takeaway entered"
+    with col:
+        st.markdown(
+            f"""
+            <div class="goal-card" style="min-height:220px;">
+              <span>Category {index}: {category_text}</span>
+                            <div style="font-size:13px; line-height:1.35; color:#333333; font-weight:400; margin-top:6px;">{takeaway_text}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
