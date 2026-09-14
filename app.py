@@ -81,11 +81,16 @@ def style_fig(fig, height: int = 340):
         margin=dict(l=10, r=10, t=30, b=10),
         paper_bgcolor="#FFFFFF",
         plot_bgcolor="#FFFFFF",
-        font=dict(family="Segoe UI, Tahoma, sans-serif", size=12, color="#333333"),
+        font=dict(family="Segoe UI, Tahoma, sans-serif", size=13, color="#222222"),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, title=None),
     )
     fig.update_xaxes(gridcolor="#E6E6E6", zeroline=False)
-    fig.update_yaxes(gridcolor="#E6E6E6", zeroline=False)
+    fig.update_yaxes(
+        gridcolor="#E6E6E6",
+        zeroline=False,
+        tickfont=dict(size=14, color="#222222"),
+        title_font=dict(size=14, color="#222222"),
+    )
     return fig
 
 
@@ -216,7 +221,7 @@ with left:
     )
     fig.update_traces(textposition="outside")
     fig.update_layout(showlegend=False)
-    fig.update_xaxes(title=None, tickangle=-25)
+    fig.update_xaxes(title=None, tickangle=-25, tickfont=dict(size=13, color="#222222"))
     fig.update_yaxes(title="Annual debrief goal", dtick=1)
     st.plotly_chart(style_fig(fig, 300), use_container_width=True)
 
@@ -268,7 +273,7 @@ with progress_col:
     )
     fig.update_traces(textfont_color="#1F3864")
     fig.update_layout(barmode="stack", legend_title_text=None)
-    fig.update_xaxes(title=None, tickangle=-25)
+    fig.update_xaxes(title=None, tickangle=-25, tickfont=dict(size=13, color="#222222"))
     fig.update_yaxes(title="Annual debrief goal", dtick=1)
     st.plotly_chart(style_fig(fig, 390), use_container_width=True)
 
@@ -312,7 +317,7 @@ fig.add_hline(
     annotation_position="top left",
 )
 fig.update_layout(showlegend=False)
-fig.update_xaxes(title=None, tickangle=-25)
+fig.update_xaxes(title=None, tickangle=-25, tickfont=dict(size=13, color="#222222"))
 fig.update_yaxes(title="Survey response rate", tickformat=".0%", range=[0, 1.05])
 st.plotly_chart(style_fig(fig, 360), use_container_width=True)
 
@@ -355,7 +360,7 @@ fig.add_hline(
 )
 fig.update_traces(marker=dict(size=11, line=dict(width=1, color="#FFFFFF")))
 fig.update_layout(showlegend=False)
-fig.update_xaxes(title=None, tickangle=-25)
+fig.update_xaxes(title=None, tickangle=-25, tickfont=dict(size=13, color="#222222"))
 fig.update_yaxes(title="Days from due date", zeroline=False, range=[y_min, y_max])
 st.plotly_chart(style_fig(fig, 390), use_container_width=True)
 
@@ -390,7 +395,7 @@ with rating_chart:
         annotation_position="top left",
     )
     fig.update_layout(showlegend=False)
-    fig.update_xaxes(title=None, tickangle=-25)
+    fig.update_xaxes(title=None, tickangle=-25, tickfont=dict(size=13, color="#222222"))
     fig.update_yaxes(title="Project rating", range=[0, 5.2])
     st.plotly_chart(style_fig(fig, 360), use_container_width=True)
 
