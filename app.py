@@ -466,7 +466,7 @@ for index, col in enumerate(insight_cols, start=1):
             f"""
             <div class="goal-card" style="min-height:220px;">
               <span>Category {index}: {category_text}</span>
-                            <div style="font-size:13px; line-height:1.35; color:#333333; font-weight:400; margin-top:6px;">{takeaway_text}</div>
+                            <div style="font-size:14px; line-height:1.35; color:#333333; font-weight:400; margin-top:6px;">{takeaway_text}</div>
             </div>
             """,
             unsafe_allow_html=True,
