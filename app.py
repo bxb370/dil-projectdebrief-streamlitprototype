@@ -465,17 +465,6 @@ for index, col in enumerate(insight_cols, start=1):
         )
 
 section("Get More Info")
-panel("Want to explore past project insights?")
-st.markdown(
-        """
-        <div class="goal-card" style="margin-bottom:12px;">
-            <span>Debrief insights bot</span>
-            <strong>Interested in extracting insights from past projects or asking questions about prior debriefs? Chat with our bot.</strong>
-        </div>
-        """,
-        unsafe_allow_html=True,
-)
-
 panel("Want more details?")
 st.markdown(
         f"""
