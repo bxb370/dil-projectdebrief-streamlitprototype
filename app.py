@@ -36,6 +36,8 @@ BUSINESS_UNIT_GOALS = {
     "Woodcare": 4,
 }
 ESTIMATED_DATE_OFFSETS = [14, -7, 21, 0, 30, -10, 12, 5, -3, 24, 8, -14, 16, 4]
+# TODO: replace with the real SharePoint/Teams link to the full project debrief dataset.
+FULL_DEBRIEF_DATA_URL = "https://example.sharepoint.com/sites/ProjectDebriefs/FullData"
 
 st.markdown(
     """
@@ -410,17 +412,7 @@ with rating_summary:
         unsafe_allow_html=True,
     )
 
-section("Get More Info")
-panel("Want to explore past project insights?")
-st.markdown(
-        """
-        <div class="goal-card" style="margin-bottom:12px;">
-            <span>Debrief insights bot</span>
-            <strong>Interested in extracting insights from past projects or asking questions about prior debriefs? Chat with our bot.</strong>
-        </div>
-        """,
-        unsafe_allow_html=True,
-)
+section("Takeaways")
 
 # ---------------------------------------------------------------- project insights
 panel("Select a project to see its key insights")
@@ -471,3 +463,26 @@ for index, col in enumerate(insight_cols, start=1):
             """,
             unsafe_allow_html=True,
         )
+
+section("Get More Info")
+panel("Want to explore past project insights?")
+st.markdown(
+        """
+        <div class="goal-card" style="margin-bottom:12px;">
+            <span>Debrief insights bot</span>
+            <strong>Interested in extracting insights from past projects or asking questions about prior debriefs? Chat with our bot.</strong>
+        </div>
+        """,
+        unsafe_allow_html=True,
+)
+
+panel("Want more details?")
+st.markdown(
+        f"""
+        <div class="goal-card">
+            <span>Full project debrief data</span>
+            <strong><a href="{FULL_DEBRIEF_DATA_URL}" target="_blank" rel="noopener noreferrer">Look at the full project debrief data</a></strong>
+        </div>
+        """,
+        unsafe_allow_html=True,
+)
